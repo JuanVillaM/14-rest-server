@@ -1,36 +1,18 @@
 require('./config/config');
 const express = require('express');
 const bodyparser = require('body-parser');
+const mongoose = require('mongoose');
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
+app.use(require('./routes/user'));
 
-app.get('/users', function(req, res) {
-    res.json('get User');
-});
-
-app.post('/users', function(req, res) {
-    let body = req.body;
-
-    if (body.name === undefined) {
-        resp.status(400).json({
-            ok: false,
-            message: 'The name is required'
-        });
-    } else {
-        res.json({ person: body });
-    }
-});
-
-app.put('/users/:id', function(req, res) {
-    let id = req.params.id;
-    res.json({ id });
-});
-
-app.delete('/users', function(req, res) {
-    res.json('delete User');
-});
+mongoose.connect(process.env.URLDB, { userNewUrlParser: true, useCreateIndex: true },
+    (err, resp) => {
+        if (err) throw error;
+        console.log('Data Base Online');
+    });
 
 app.listen(process.env.PORT, () => {
     console.log('Listening to port: ', process.env.PORT);
