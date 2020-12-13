@@ -6,7 +6,9 @@ const app = express();
 
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-app.use(require('./routes/user'));
+
+// Global Routes Configuration
+app.use(require('./routes/index'));
 
 mongoose.connect(process.env.URLDB, { userNewUrlParser: true, useCreateIndex: true },
     (err, resp) => {
